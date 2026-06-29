@@ -42,5 +42,5 @@ The Sparkle feed is prepared for `https://freeteaspoon.github.io/MYTGS-MAC/appca
 
 ## Remaining Production Work
 
-- Install local Apple Developer credentials, generate the Sparkle EdDSA key, and run the prepared release script.
+- Install local Apple Developer credentials and run the prepared release script.
 - Decide whether `com.freeteaspoon.mytgs` needs an Apple Developer team-specific prefix before public distribution.

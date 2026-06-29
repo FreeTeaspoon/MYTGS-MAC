@@ -18,5 +18,5 @@ This is implemented as a root-level Swift package plus `MYTGS.xcodeproj`. Open t
 
 ## Remaining Production Work
 
-- Install local Apple Developer credentials, generate the Sparkle EdDSA key, and run the prepared release script.
+- Install local Apple Developer credentials and run the prepared release script.
 - Decide whether `com.freeteaspoon.mytgs` needs an Apple Developer team-specific prefix before public distribution.

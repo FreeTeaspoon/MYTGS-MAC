@@ -6,6 +6,7 @@ PROJECT="$ROOT_DIR/MYTGS.xcodeproj"
 SCHEME="MYTGS"
 CONFIGURATION="Release"
 LOCAL_CONFIG="$ROOT_DIR/Config/Signing.local.xcconfig"
+RELEASE_CONFIG="$ROOT_DIR/Config/MYTGS-Release.xcconfig"
 DIST_DIR="$ROOT_DIR/dist"
 ARCHIVE_PATH="$ROOT_DIR/build/release/MYTGS.xcarchive"
 
@@ -25,8 +26,10 @@ fail() {
     exit 1
 }
 
-read_xcconfig_value() {
-    local key="$1"
+read_xcconfig_value_from() {
+    local file="$1"
+    local key="$2"
+    [[ -f "$file" ]] || return 0
     awk -v key="$key" '
         $0 ~ "^[[:space:]]*" key "[[:space:]]*=" {
             value = substr($0, index($0, "=") + 1)
@@ -34,7 +37,11 @@ read_xcconfig_value() {
             sub(/[[:space:]]+$/, "", value)
             print value
         }
-    ' "$LOCAL_CONFIG" | tail -n 1
+    ' "$file" | tail -n 1
+}
+
+read_xcconfig_value() {
+    read_xcconfig_value_from "$LOCAL_CONFIG" "$1"
 }
 
 require_local_config() {
@@ -47,11 +54,14 @@ load_release_config() {
     SIGNING_IDENTITY="$(read_xcconfig_value MYTGS_CODE_SIGN_IDENTITY)"
     NOTARY_PROFILE="$(read_xcconfig_value MYTGS_NOTARY_PROFILE)"
     SPARKLE_PUBLIC_KEY="$(read_xcconfig_value MYTGS_SPARKLE_PUBLIC_ED_KEY)"
+    if [[ -z "${SPARKLE_PUBLIC_KEY:-}" ]]; then
+        SPARKLE_PUBLIC_KEY="$(read_xcconfig_value_from "$RELEASE_CONFIG" MYTGS_SPARKLE_PUBLIC_ED_KEY)"
+    fi
 
     [[ -n "${TEAM_ID:-}" ]] || fail "MYTGS_DEVELOPMENT_TEAM is missing in Config/Signing.local.xcconfig."
     [[ -n "${SIGNING_IDENTITY:-}" ]] || fail "MYTGS_CODE_SIGN_IDENTITY is missing in Config/Signing.local.xcconfig."
     [[ -n "${NOTARY_PROFILE:-}" ]] || fail "MYTGS_NOTARY_PROFILE is missing in Config/Signing.local.xcconfig."
-    [[ -n "${SPARKLE_PUBLIC_KEY:-}" ]] || fail "MYTGS_SPARKLE_PUBLIC_ED_KEY is missing in Config/Signing.local.xcconfig."
+    [[ -n "${SPARKLE_PUBLIC_KEY:-}" ]] || fail "MYTGS_SPARKLE_PUBLIC_ED_KEY is missing in Config/MYTGS-Release.xcconfig."
 }
 
 preflight() {

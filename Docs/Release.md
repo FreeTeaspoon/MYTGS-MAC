@@ -13,9 +13,9 @@ MYTGS is prepared for direct distribution outside the Mac App Store. Debug build
 xcrun notarytool store-credentials MYTGS-notarytool --team-id YOURTEAMID --apple-id you@example.com
 ```
 
-5. Generate Sparkle EdDSA keys using Sparkle's `generate_keys` tool. Keep the private key in Keychain and paste only the public key into `MYTGS_SPARKLE_PUBLIC_ED_KEY`.
+5. Keep the Sparkle private EdDSA key in this Mac's Keychain. The matching public key is committed in `Config/MYTGS-Release.xcconfig`.
 
-`Config/Signing.local.xcconfig` is ignored by git. Do not commit Apple credentials or Sparkle private keys.
+`Config/Signing.local.xcconfig` is ignored by git. Do not commit Apple credentials or Sparkle private keys. If the Sparkle key ever needs to be rotated, generate a new key with Sparkle's `generate_keys` tool, commit only the new public key, and keep the private key in Keychain.
 
 ## Release Build
 
@@ -43,4 +43,4 @@ https://freeteaspoon.github.io/MYTGS-MAC/appcast.xml
 
 Use GitHub Releases for the notarized zip download, then publish the Sparkle appcast through GitHub Pages. When creating the appcast, sign update archives with Sparkle's EdDSA key. Do not publish or commit the private key.
 
-Until `MYTGS_SPARKLE_PUBLIC_ED_KEY` is filled in for a build, the app will show that updates are not configured instead of starting Sparkle.
+The committed `MYTGS_SPARKLE_PUBLIC_ED_KEY` lets release builds verify Sparkle updates. The private key must stay available locally when creating signed appcasts.

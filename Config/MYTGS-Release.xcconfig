@@ -4,7 +4,7 @@ MYTGS_DEVELOPMENT_TEAM =
 MYTGS_CODE_SIGN_IDENTITY = Developer ID Application
 MYTGS_NOTARY_PROFILE = MYTGS-notarytool
 MYTGS_SPARKLE_FEED_URL = https:/$()/freeteaspoon.github.io/MYTGS-MAC/appcast.xml
-MYTGS_SPARKLE_PUBLIC_ED_KEY =
+MYTGS_SPARKLE_PUBLIC_ED_KEY = +Gt7fCiZPmAL9OtGkc2lp8OpFT8I5TzLNAX0x3n/AMU=
 
 #include? "Signing.local.xcconfig"
 
