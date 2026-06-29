@@ -33,6 +33,17 @@ Scripts/release.sh release
 
 The script writes archives under `build/release/` and release zips under `dist/`.
 
+## Unsigned Alpha DMG
+
+If you are publishing an alpha build without Apple Developer ID, build the app locally with ad-hoc signing, then package it as a drag-and-drop DMG:
+
+```sh
+xcodebuild -project MYTGS.xcodeproj -scheme MYTGS -configuration Release -destination "generic/platform=macOS" -derivedDataPath build/unsigned CODE_SIGN_STYLE=Manual CODE_SIGN_IDENTITY=- DEVELOPMENT_TEAM= ENABLE_HARDENED_RUNTIME=NO OTHER_CODE_SIGN_FLAGS= build
+Scripts/package-unsigned-dmg.sh 0.1.0-alpha.1
+```
+
+This creates `dist/MYTGS-0.1.0-alpha.1.dmg` with `MYTGS.app`, an Applications shortcut, and a Finder background. Upload this only as a prerelease and clearly note that macOS will show an unidentified developer warning.
+
 ## Sparkle Appcast
 
 Sparkle is configured to read:
